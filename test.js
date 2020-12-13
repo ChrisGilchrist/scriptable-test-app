@@ -38,3 +38,36 @@ async function loadItems() {
     
 
 }
+
+
+
+
+
+/***
+ * Script to work out how many ferries there currently are running in torpoint
+ */
+
+
+(async () => {
+    const response = await fetch('https://www.tamarcrossings.org.uk/#torpoint-ferry');
+    const text = await response.text();
+    const doc = new DOMParser().parseFromString(text, "text/html");
+    
+    // Get the date time on the site for reference
+    const timeStamp = doc.getElementsByClassName('last-update-ferry')[0].innerHTML;
+    
+    // Get the westbound ferry status
+    const westBoundFerry = doc.getElementsByClassName('status-for-ferry-west')[0].getElementsByClassName('status-text-block')[0].getElementsByClassName('status-text')[0].innerHTML;
+    
+    // Get the eastboundferry status
+    const eastBoundFerry = doc.getElementsByClassName('status-for-ferry-east')[0].getElementsByClassName('status-text-block')[0].getElementsByClassName('status-text')[0].innerHTML;
+  
+    // Set the divs
+    document.getElementById('timeStamp').innerHTML = `<b>Last Status:</b> ${timeStamp}`;
+    document.getElementById('westBoundStatus').innerHTML = `<b>Devonport Status:</b> ${westBoundFerry}`;
+    document.getElementById('eastBoundStatus').innerHTML = `<b>Torpoint Status:</b> ${eastBoundFerry}`;
+  })();
+
+
+
+
